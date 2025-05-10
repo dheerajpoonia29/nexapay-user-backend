@@ -1,5 +1,6 @@
 package com.nexapay.nexapay_backend.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -10,5 +11,6 @@ public class UserResponse {
 
     private String emailAddress;
 
+    @JsonIgnore
     private String password;
 }
