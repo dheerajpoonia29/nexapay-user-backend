@@ -1,7 +1,7 @@
 package com.nexapay.nexapay_backend.dao;
 
-import com.nexapay.nexapay_backend.dto.request.UserRequest;
-import com.nexapay.nexapay_backend.dto.request.UserResponse;
+import com.nexapay.nexapay_backend.dto.UserRequest;
+import com.nexapay.nexapay_backend.dto.UserResponse;
 import com.nexapay.nexapay_backend.model.UserEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,29 +20,25 @@ public class UserDAO {
     UserRepository userRepository;
 
     public UserResponse createUser(UserRequest userRequest) {
-        if(readByEmail(userRequest.getEmailAddress())==null) {
-            UserEntity userEntity = new UserEntity(new Random().nextInt(1000), userRequest.getFullName(),
-                    userRequest.getEmailAddress(), userRequest.getPassword());
+        if(readByEmail(userRequest.getEmail())==null) {
+            UserEntity userEntity = new UserEntity(new Random().nextInt(1000), userRequest.getName(),
+                    userRequest.getEmail(), userRequest.getPassword());
             userRepository.save(userEntity);
-            return UserResponse.builder().responseStatus(HttpStatus.CREATED).responseMsg("user created")
-                    .fullName(userEntity.getFullName())
-                    .emailAddress(userEntity.getEmail()).build();
+            return UserResponse.builder().name(userEntity.getName()).email(userEntity.getEmail()).build();
         }
-        logger.warn("user with email id {} is already present", userRequest.getEmailAddress());
-        return UserResponse.builder().responseStatus(HttpStatus.FORBIDDEN).responseMsg("user already exist").build();
+        logger.warn("user with email id {} is already present", userRequest.getEmail());
+        return null;
     }
 
     public UserResponse readByEmail(String email) {
         try {
             UserEntity userEntity = userRepository.findByEmail(email).get();
             if(userEntity.getEmail()!=null) {
-                return UserResponse.builder().responseStatus(HttpStatus.FOUND).responseMsg("user found")
-                        .fullName(userEntity.getFullName())
-                        .emailAddress(userEntity.getEmail()).build();
+                return UserResponse.builder().name(userEntity.getName()).email(userEntity.getEmail()).build();
             }
         } catch (NoSuchElementException e) {
             logger.warn("user not found");
         }
-        return UserResponse.builder().responseStatus(HttpStatus.FOUND).responseMsg("user not found").build();
+        return null;
     }
 }

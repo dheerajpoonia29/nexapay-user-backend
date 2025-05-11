@@ -1,4 +1,4 @@
-package com.nexapay.nexapay_backend.dto.request;
+package com.nexapay.nexapay_backend.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
@@ -10,16 +10,9 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 @Builder
 public class UserResponse {
-    @JsonIgnore
-    private HttpStatus responseStatus;
+    private String name;
 
-    private int responseStatusInt;
-
-    private String responseMsg;
-
-    private String fullName;
-
-    private String emailAddress;
+    private String email;
 
     @JsonIgnore
     private String password;

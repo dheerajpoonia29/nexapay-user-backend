@@ -16,7 +16,7 @@ public class UserEntity {
     private Integer id;
 
     @Column
-    private String fullName;
+    private String name;
 
     @Column(unique = true)
     private String email;
