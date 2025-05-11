@@ -4,6 +4,8 @@ import com.nexapay.nexapay_backend.dao.UserDAO;
 import com.nexapay.nexapay_backend.dto.request.UserRequest;
 import com.nexapay.nexapay_backend.dto.request.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,19 +15,21 @@ public class UserAuthController {
     UserDAO userDAO;
 
     @GetMapping("/health")
-    String loginHealth() {
-        return "user auth api is up!!";
+    ResponseEntity<UserResponse> loginHealth() {
+        return ResponseEntity.status(HttpStatus.OK).body(UserResponse.builder().responseStatus(HttpStatus.OK).responseMsg("user auth api is up!!").build());
     }
 
     @GetMapping("/login")
-    UserResponse loginUser(@RequestBody UserRequest userRequest) {
+    ResponseEntity<UserResponse> loginUser(@RequestBody UserRequest userRequest) {
         UserResponse userResponse = userDAO.readByEmail(userRequest.getEmailAddress());
-        return userResponse;
+        userResponse.setResponseStatusInt(userResponse.getResponseStatus().value());
+        return ResponseEntity.status(userResponse.getResponseStatusInt()).body(userResponse);
     }
 
     @PostMapping("/signup")
-    UserResponse signupUser(@RequestBody UserRequest userRequest) {
+    ResponseEntity<UserResponse> signupUser(@RequestBody UserRequest userRequest) {
         UserResponse userResponse = userDAO.createUser(userRequest);
-        return userResponse;
+        userResponse.setResponseStatusInt(userResponse.getResponseStatus().value());
+        return ResponseEntity.status(userResponse.getResponseStatusInt()).body(userResponse);
     }
 }
