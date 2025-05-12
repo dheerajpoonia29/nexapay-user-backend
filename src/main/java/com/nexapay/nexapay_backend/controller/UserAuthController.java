@@ -1,9 +1,9 @@
 package com.nexapay.nexapay_backend.controller;
 
-import com.nexapay.nexapay_backend.dao.UserDAO;
 import com.nexapay.nexapay_backend.dto.UserRequest;
 import com.nexapay.nexapay_backend.dto.Response;
-import com.nexapay.nexapay_backend.service.UserAuthService;
+import com.nexapay.nexapay_backend.dto.UserResponse;
+import com.nexapay.nexapay_backend.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,29 +18,29 @@ public class UserAuthController {
     private static final Logger logger = LoggerFactory.getLogger(UserAuthController.class);
 
     @Autowired
-    UserDAO userDAO;
-
-    @Autowired
-    UserAuthService userAuthService;
+    UserService userService;
 
     @GetMapping("/health")
     ResponseEntity<Response> loginHealth() {
-        logger.info("login health controller");
-        return ResponseEntity.status(HttpStatus.OK).body(Response.builder()
-                .responseStatus(HttpStatus.OK).responseMsg("user auth api is up!!").build());
+        logger.info("auth api");
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Response.builder()
+                        .responseStatus(HttpStatus.OK)
+                        .responseMsg("user auth api is up!!")
+                        .responseData(null).build());
     }
 
     @PostMapping("/login")
-    ResponseEntity<Response> loginUser(@RequestBody UserRequest userRequest) {
-        logger.info("login user controller");
-        Response response = userAuthService.getUserByEmailAndAuthenticate(userRequest);
+    ResponseEntity<Response<UserResponse>> loginUser(@RequestBody UserRequest userRequest) {
+        logger.info("login user");
+        Response<UserResponse> response = userService.getUserByEmailAndAuthenticate(userRequest);
         return ResponseEntity.status(response.getResponseStatus()).body(response);
     }
 
     @PostMapping("/signup")
-    ResponseEntity<Response> signupUser(@RequestBody UserRequest userRequest) {
-        logger.info("signup user controller");
-        Response response = userAuthService.createUserAndPersist(userRequest);
+    ResponseEntity<Response<UserResponse>> signupUser(@RequestBody UserRequest userRequest) {
+        logger.info("signup user");
+        Response<UserResponse> response = userService.createUserAndPersist(userRequest);
         return ResponseEntity.status(response.getResponseStatus()).body(response);
     }
 }

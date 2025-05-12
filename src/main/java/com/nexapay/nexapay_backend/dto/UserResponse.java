@@ -15,4 +15,13 @@ public class UserResponse {
 
     @JsonIgnore
     private String password;
+
+    private AccountResponse accountResponse;
+
+    public UserResponse toResponse() {
+        return UserResponse.builder()
+                .name(this.name)
+                .email(this.email)
+                .build();
+    }
 }

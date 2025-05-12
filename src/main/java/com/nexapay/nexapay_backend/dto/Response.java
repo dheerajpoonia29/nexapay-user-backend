@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Response {
+public class Response <T> {
     @JsonIgnore
     private HttpStatus responseStatus;
 
@@ -19,5 +19,5 @@ public class Response {
 
     private String responseMsg;
 
-    private UserResponse userResponse;
+    private T responseData;
 }

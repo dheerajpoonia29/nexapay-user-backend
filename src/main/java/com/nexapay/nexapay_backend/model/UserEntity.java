@@ -1,26 +1,40 @@
 package com.nexapay.nexapay_backend.model;
 
+import com.nexapay.nexapay_backend.dto.UserResponse;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "user_table")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class UserEntity {
     @Id
-    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
-    @Column(unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column
+    @Column(nullable = false)
     private String password;
+
+    @OneToOne(mappedBy = "userEntity", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private AccountEntity accountEntity;
+
+    public UserResponse toResponse() {
+        return UserResponse.builder()
+                .name(this.name)
+                .email(this.email)
+                .password(this.password)
+                .accountResponse(this.accountEntity !=null ? this.accountEntity.toResponse() : null)
+                .build();
+    }
 }
