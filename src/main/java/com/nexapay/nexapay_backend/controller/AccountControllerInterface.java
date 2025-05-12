@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface AccountControllerInterface {
     ResponseEntity<Response<AccountResponse>> openAccount(@RequestBody AccountRequest accountRequest);
 
-    ResponseEntity<Response<AccountResponse>> updateAccount(@RequestBody AccountRequest accountRequest);
-
     ResponseEntity<Response<AccountResponse>> searchAccountByUserEmail(@RequestParam String email);
 
     ResponseEntity<Response<AccountResponse>> searchAccountByAccountNo(@RequestParam String accountNo);

@@ -41,12 +41,6 @@ public class AccountController implements AccountControllerInterface {
     }
 
     @Override
-    @PutMapping("/update")
-    public ResponseEntity<Response<AccountResponse>> updateAccount(@RequestBody AccountRequest accountRequest) {
-        return null;
-    }
-
-    @Override
     @GetMapping("/search-by-email")
     public ResponseEntity<Response<AccountResponse>> searchAccountByUserEmail(@RequestParam("email") String email) {
         Response<AccountResponse> response = accountService.getAccountByUserEmail(email);
