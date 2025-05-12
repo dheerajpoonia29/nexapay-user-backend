@@ -35,7 +35,7 @@ public class UserEntity {
                 .name(this.name)
                 .email(this.email)
                 .password(this.password)
-                .accountResponse(this.accountEntity !=null ? this.accountEntity.toResponse() : null)
+                .accountData(this.accountEntity !=null ? this.accountEntity.toResponse() : null)
                 .build();
     }
 }

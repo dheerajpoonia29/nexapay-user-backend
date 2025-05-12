@@ -16,7 +16,7 @@ public class UserResponse {
     @JsonIgnore
     private String password;
 
-    private AccountResponse accountResponse;
+    private AccountResponse accountData;
 
     public UserResponse toResponse() {
         return UserResponse.builder()
