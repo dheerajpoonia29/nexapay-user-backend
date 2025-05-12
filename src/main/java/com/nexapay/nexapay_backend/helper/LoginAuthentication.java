@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 public class LoginAuthentication {
     private static final Logger logger = LoggerFactory.getLogger(LoginAuthentication.class);
 
-    public static boolean verifyPassword(UserRequest userRequest, UserResponse userResponse) {
+    public static boolean verifyPassword(String userPass, String dbPass) {
         logger.info("verifying password");
-        return userRequest.getPassword().equals(userResponse.getPassword());
+        return userPass.equals(dbPass);
     }
 }

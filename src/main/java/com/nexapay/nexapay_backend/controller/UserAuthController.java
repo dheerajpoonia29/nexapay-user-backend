@@ -5,6 +5,8 @@ import com.nexapay.nexapay_backend.dto.UserRequest;
 import com.nexapay.nexapay_backend.dto.UserResponse;
 import com.nexapay.nexapay_backend.dto.Response;
 import com.nexapay.nexapay_backend.helper.LoginAuthentication;
+import com.nexapay.nexapay_backend.model.UserEntity;
+import com.nexapay.nexapay_backend.service.UserAuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class UserAuthController {
     @Autowired
     UserDAO userDAO;
 
+    @Autowired
+    UserAuthService userAuthService;
+
     @GetMapping("/health")
     ResponseEntity<Response> loginHealth() {
         logger.info("login health controller");
@@ -31,48 +36,14 @@ public class UserAuthController {
     @PostMapping("/login")
     ResponseEntity<Response> loginUser(@RequestBody UserRequest userRequest) {
         logger.info("login user controller");
-        UserResponse userResponse = userDAO.readByEmail(userRequest.getEmail());
-        if(userResponse==null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(
-                    Response.builder().responseStatus(HttpStatus.UNAUTHORIZED)
-                            .responseStatusInt(HttpStatus.UNAUTHORIZED.value())
-                            .responseMsg("user not found")
-                            .userResponse(null).build()
-            );
-        }
-        if (LoginAuthentication.verifyPassword(userRequest, userResponse)) {
-            return ResponseEntity.status(HttpStatus.OK.value()).body(
-                    Response.builder().responseStatus(HttpStatus.OK)
-                            .responseStatusInt(HttpStatus.OK.value())
-                            .responseMsg("user found and authenticated")
-                            .userResponse(userResponse).build()
-            );
-        }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(
-                Response.builder().responseStatus(HttpStatus.UNAUTHORIZED)
-                        .responseStatusInt(HttpStatus.UNAUTHORIZED.value())
-                        .responseMsg("user found but unauthenticated")
-                        .userResponse(null).build()
-        );
+        Response response = userAuthService.getUserByEmailAndAuthenticate(userRequest);
+        return ResponseEntity.status(response.getResponseStatus()).body(response);
     }
 
     @PostMapping("/signup")
     ResponseEntity<Response> signupUser(@RequestBody UserRequest userRequest) {
         logger.info("signup user controller");
-        UserResponse userResponse = userDAO.createUser(userRequest);
-        if(userResponse==null) {
-            return ResponseEntity.status(HttpStatus.CONFLICT.value()).body(
-                    Response.builder().responseStatus(HttpStatus.CONFLICT)
-                            .responseStatusInt(HttpStatus.CONFLICT.value())
-                            .responseMsg("user already present")
-                            .userResponse(null).build()
-            );
-        }
-        return ResponseEntity.status(HttpStatus.CREATED.value()).body(
-                Response.builder().responseStatus(HttpStatus.CREATED)
-                        .responseStatusInt(HttpStatus.CREATED.value())
-                        .responseMsg("user created")
-                        .userResponse(userResponse).build()
-        );
+        Response response = userAuthService.createUserAndPersist(userRequest);
+        return ResponseEntity.status(response.getResponseStatus()).body(response);
     }
 }
