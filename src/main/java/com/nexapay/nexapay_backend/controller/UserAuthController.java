@@ -4,6 +4,7 @@ import com.nexapay.nexapay_backend.dao.UserDAO;
 import com.nexapay.nexapay_backend.dto.UserRequest;
 import com.nexapay.nexapay_backend.dto.UserResponse;
 import com.nexapay.nexapay_backend.dto.Response;
+import com.nexapay.nexapay_backend.helper.LoginAuthentication;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 @CrossOrigin
 public class UserAuthController {
-    private static Logger logger = LoggerFactory.getLogger(UserAuthController.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserAuthController.class);
 
     @Autowired
     UserDAO userDAO;
@@ -39,12 +40,19 @@ public class UserAuthController {
                             .userResponse(null).build()
             );
         }
-        // todo check password, helper -> authentication
-        return ResponseEntity.status(HttpStatus.OK.value()).body(
-                Response.builder().responseStatus(HttpStatus.OK)
-                        .responseStatusInt(HttpStatus.OK.value())
-                        .responseMsg("user found")
-                        .userResponse(userResponse).build()
+        if (LoginAuthentication.verifyPassword(userRequest, userResponse)) {
+            return ResponseEntity.status(HttpStatus.OK.value()).body(
+                    Response.builder().responseStatus(HttpStatus.OK)
+                            .responseStatusInt(HttpStatus.OK.value())
+                            .responseMsg("user found and authenticated")
+                            .userResponse(userResponse).build()
+            );
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).body(
+                Response.builder().responseStatus(HttpStatus.UNAUTHORIZED)
+                        .responseStatusInt(HttpStatus.UNAUTHORIZED.value())
+                        .responseMsg("user found but unauthenticated")
+                        .userResponse(null).build()
         );
     }
 
