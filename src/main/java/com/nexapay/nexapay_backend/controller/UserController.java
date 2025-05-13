@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin
-public class UserAuthController {
-    private static final Logger logger = LoggerFactory.getLogger(UserAuthController.class);
+public class UserController implements UserInterface {
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     UserService userService;
 
     @GetMapping("/health")
-    ResponseEntity<Response> loginHealth() {
+    public ResponseEntity<Response<Object>> apiHealth() {
         logger.info("auth api");
         return ResponseEntity.status(HttpStatus.OK)
                 .body(Response.builder()
@@ -31,14 +31,14 @@ public class UserAuthController {
     }
 
     @PostMapping("/login")
-    ResponseEntity<Response<UserResponse>> loginUser(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<Response<UserResponse>> loginUser(@RequestBody UserRequest userRequest) {
         logger.info("login user");
         Response<UserResponse> response = userService.getUserByEmailAndAuthenticate(userRequest);
         return ResponseEntity.status(response.getResponseStatus()).body(response);
     }
 
     @PostMapping("/signup")
-    ResponseEntity<Response<UserResponse>> signupUser(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<Response<UserResponse>> signupUser(@RequestBody UserRequest userRequest) {
         logger.info("signup user");
         Response<UserResponse> response = userService.createUserAndPersist(userRequest);
         return ResponseEntity.status(response.getResponseStatus()).body(response);

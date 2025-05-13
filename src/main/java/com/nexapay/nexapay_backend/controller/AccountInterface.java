@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-public interface AccountControllerInterface {
+public interface AccountInterface {
     ResponseEntity<Response<Object>> apiHealth();
 
     ResponseEntity<Response<AccountResponse>> openAccount(@RequestBody AccountRequest accountRequest);

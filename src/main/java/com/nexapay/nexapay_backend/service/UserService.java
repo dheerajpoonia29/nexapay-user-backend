@@ -6,12 +6,15 @@ import com.nexapay.nexapay_backend.dao.UserDAO;
 import com.nexapay.dto.response.Response;
 import com.nexapay.dto.response.UserResponse;
 import com.nexapay.nexapay_backend.helper.LoginAuthentication;
+import com.nexapay.nexapay_backend.model.AccountEntity;
 import com.nexapay.nexapay_backend.model.UserEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import static com.nexapay.nexapay_backend.helper.CreateUserResponse.createResponse;
 
 @Service
 public class UserService {
@@ -26,36 +29,16 @@ public class UserService {
         if (userEntity != null) {
             logger.info("authenticate user");
             if (LoginAuthentication.verifyPassword(userRequest.getPassword(), userEntity.getPassword())) {
-                return Response.<UserResponse>builder()
-                        .responseStatus(HttpStatus.OK)
-                        .responseStatusInt(HttpStatus.OK.value())
-                        .responseMsg("user authenticated")
-                        .responseData(UserResponse.builder()
-                                .name(userEntity.getName())
-                                .email(userEntity.getEmail())
-                                .accountData(
-                                        AccountResponse.builder()
-                                                .accountNo(userEntity.getAccountEntity().getAccountNo())
-                                                .balance(userEntity.getAccountEntity().getBalance())
-                                                .userId(userEntity.getAccountEntity().getId()).build()).build()).build();
+                return createResponse(HttpStatus.OK, "user authenticated", userEntity);
             }
         }
-        return Response.<UserResponse>builder()
-                .responseStatus(HttpStatus.UNAUTHORIZED)
-                .responseStatusInt(HttpStatus.UNAUTHORIZED.value())
-                .responseMsg("user not found or not authenticated")
-                .responseData(null)
-                .build();
+        return createResponse(HttpStatus.UNAUTHORIZED, "user not found or not authenticated", null);
     }
 
     public Response<UserResponse> createUserAndPersist(UserRequest userRequest) {
         logger.info("check user not exist");
         if (userDAO.readUserByEmail(userRequest.getEmail()) != null) {
-            return Response.<UserResponse>builder()
-                    .responseStatus(HttpStatus.CONFLICT)
-                    .responseStatusInt(HttpStatus.CONFLICT.value())
-                    .responseMsg("user already present")
-                    .responseData(null).build();
+            return createResponse(HttpStatus.CONFLICT, "user already present", null);
         }
 
         logger.info("create user");
@@ -67,24 +50,10 @@ public class UserService {
         logger.info("persist user");
         boolean status = userDAO.saveUser(userEntity);
         if (status) {
-            return Response.<UserResponse>builder()
-                    .responseStatus(HttpStatus.CREATED)
-                    .responseStatusInt(HttpStatus.CREATED.value())
-                    .responseMsg("user created")
-                    .responseData(UserResponse.builder()
-                            .name(userEntity.getName())
-                            .email(userEntity.getEmail())
-                            .accountData(
-                                    AccountResponse.builder()
-                                            .accountNo(userEntity.getAccountEntity().getAccountNo())
-                                            .balance(userEntity.getAccountEntity().getBalance())
-                                            .userId(userEntity.getAccountEntity().getId()).build()).build()).build();
+            return createResponse(HttpStatus.CREATED, "user created", userEntity);
         }
 
         logger.info("return response");
-        return Response.<UserResponse>builder().responseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                .responseStatusInt(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .responseMsg("something went wrong")
-                .responseData(null).build();
+        return createResponse(HttpStatus.INTERNAL_SERVER_ERROR, "something went wrong", null);
     }
 }
