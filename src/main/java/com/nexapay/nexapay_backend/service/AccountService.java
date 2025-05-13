@@ -44,7 +44,7 @@ public class AccountService implements AccountServiceInterface {
 
         logger.info("check account exist already");
         if (userEntity.getAccountEntity()!=null) {
-            return createResponse(HttpStatus.CONFLICT, "account already exist", null);
+            return createResponse(HttpStatus.CONFLICT, "account already exist", userEntity.getAccountEntity());
         }
 
         logger.info("create account");

@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/account")
 @CrossOrigin
-public class Account implements AccountInterface {
-    private static final Logger logger = LoggerFactory.getLogger(Account.class);
+public class AccountController implements AccountInterface {
+    private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
 
     @Autowired
     AccountService accountService;
