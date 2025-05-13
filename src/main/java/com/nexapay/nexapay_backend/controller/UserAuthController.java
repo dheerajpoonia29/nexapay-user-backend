@@ -1,8 +1,8 @@
 package com.nexapay.nexapay_backend.controller;
 
-import com.nexapay.nexapay_backend.dto.UserRequest;
-import com.nexapay.nexapay_backend.dto.Response;
-import com.nexapay.nexapay_backend.dto.UserResponse;
+import com.nexapay.dto.request.UserRequest;
+import com.nexapay.dto.response.Response;
+import com.nexapay.dto.response.UserResponse;
 import com.nexapay.nexapay_backend.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

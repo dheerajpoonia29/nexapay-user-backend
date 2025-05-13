@@ -1,8 +1,8 @@
 package com.nexapay.nexapay_backend.controller;
 
-import com.nexapay.nexapay_backend.dto.AccountRequest;
-import com.nexapay.nexapay_backend.dto.AccountResponse;
-import com.nexapay.nexapay_backend.dto.Response;
+import com.nexapay.dto.request.AccountRequest;
+import com.nexapay.dto.response.AccountResponse;
+import com.nexapay.dto.response.Response;
 import com.nexapay.nexapay_backend.service.AccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +20,9 @@ public class AccountController implements AccountControllerInterface {
     @Autowired
     AccountService accountService;
 
+    @Override
     @GetMapping("/health")
-    ResponseEntity<Response> loginHealth() {
+    public ResponseEntity<Response<Object>> apiHealth() {
         logger.info("account api");
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -43,6 +44,7 @@ public class AccountController implements AccountControllerInterface {
     @Override
     @GetMapping("/search-by-email")
     public ResponseEntity<Response<AccountResponse>> searchAccountByUserEmail(@RequestParam("email") String email) {
+        logger.info("search account by user email");
         Response<AccountResponse> response = accountService.getAccountByUserEmail(email);
         return ResponseEntity.status(response.getResponseStatus()).body(response);
     }
@@ -50,7 +52,16 @@ public class AccountController implements AccountControllerInterface {
     @Override
     @GetMapping("/search-by-account-no")
     public ResponseEntity<Response<AccountResponse>> searchAccountByAccountNo(@RequestParam("accountNo") String accountNo) {
+        logger.info("search account by user account no");
         Response<AccountResponse> response = accountService.getAccountByAccountNo(accountNo);
+        return ResponseEntity.status(response.getResponseStatus()).body(response);
+    }
+
+    @Override
+    @PostMapping("/update-account")
+    public ResponseEntity<Response<AccountResponse>> updateAccount(AccountRequest accountRequest) {
+        logger.info("update user account");
+        Response<AccountResponse> response = accountService.updateAccount(accountRequest);
         return ResponseEntity.status(response.getResponseStatus()).body(response);
     }
 }

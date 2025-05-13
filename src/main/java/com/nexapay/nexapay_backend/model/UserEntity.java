@@ -1,6 +1,5 @@
 package com.nexapay.nexapay_backend.model;
 
-import com.nexapay.nexapay_backend.dto.UserResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,13 +28,4 @@ public class UserEntity {
     @OneToOne(mappedBy = "userEntity", cascade = CascadeType.ALL)
     @ToString.Exclude
     private AccountEntity accountEntity;
-
-    public UserResponse toResponse() {
-        return UserResponse.builder()
-                .name(this.name)
-                .email(this.email)
-                .password(this.password)
-                .accountData(this.accountEntity !=null ? this.accountEntity.toResponse() : null)
-                .build();
-    }
 }

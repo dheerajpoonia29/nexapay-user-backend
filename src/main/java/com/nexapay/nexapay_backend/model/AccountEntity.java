@@ -1,6 +1,6 @@
 package com.nexapay.nexapay_backend.model;
 
-import com.nexapay.nexapay_backend.dto.AccountResponse;
+import com.nexapay.dto.response.AccountResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,17 +22,10 @@ public class AccountEntity {
     @Column(nullable = false)
     private long balance;
 
+    // todo add bank name column
+
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ToString.Exclude
     private UserEntity userEntity;
-
-    public AccountResponse toResponse() {
-        return AccountResponse.builder()
-                .accountNo(this.accountNo)
-                .balance(this.balance)
-//                .userResponse(this.userEntity != null ? this.userEntity.toResponse() : null)
-                .userId(this.userEntity != null ? this.userEntity.getId() : null)
-                .build();
-    }
 }

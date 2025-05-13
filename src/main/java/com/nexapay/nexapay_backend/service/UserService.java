@@ -1,9 +1,10 @@
 package com.nexapay.nexapay_backend.service;
 
+import com.nexapay.dto.request.UserRequest;
+import com.nexapay.dto.response.AccountResponse;
 import com.nexapay.nexapay_backend.dao.UserDAO;
-import com.nexapay.nexapay_backend.dto.Response;
-import com.nexapay.nexapay_backend.dto.UserRequest;
-import com.nexapay.nexapay_backend.dto.UserResponse;
+import com.nexapay.dto.response.Response;
+import com.nexapay.dto.response.UserResponse;
 import com.nexapay.nexapay_backend.helper.LoginAuthentication;
 import com.nexapay.nexapay_backend.model.UserEntity;
 import org.slf4j.Logger;
@@ -29,8 +30,14 @@ public class UserService {
                         .responseStatus(HttpStatus.OK)
                         .responseStatusInt(HttpStatus.OK.value())
                         .responseMsg("user authenticated")
-                        .responseData(userEntity.toResponse())
-                        .build();
+                        .responseData(UserResponse.builder()
+                                .name(userEntity.getName())
+                                .email(userEntity.getEmail())
+                                .accountData(
+                                        AccountResponse.builder()
+                                                .accountNo(userEntity.getAccountEntity().getAccountNo())
+                                                .balance(userEntity.getAccountEntity().getBalance())
+                                                .userId(userEntity.getAccountEntity().getId()).build()).build()).build();
             }
         }
         return Response.<UserResponse>builder()
@@ -64,7 +71,14 @@ public class UserService {
                     .responseStatus(HttpStatus.CREATED)
                     .responseStatusInt(HttpStatus.CREATED.value())
                     .responseMsg("user created")
-                    .responseData(userEntity.toResponse()).build();
+                    .responseData(UserResponse.builder()
+                            .name(userEntity.getName())
+                            .email(userEntity.getEmail())
+                            .accountData(
+                                    AccountResponse.builder()
+                                            .accountNo(userEntity.getAccountEntity().getAccountNo())
+                                            .balance(userEntity.getAccountEntity().getBalance())
+                                            .userId(userEntity.getAccountEntity().getId()).build()).build()).build();
         }
 
         logger.info("return response");
