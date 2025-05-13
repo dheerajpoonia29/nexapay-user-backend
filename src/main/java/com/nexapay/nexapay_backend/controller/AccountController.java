@@ -64,4 +64,12 @@ public class AccountController implements AccountInterface {
         Response<AccountResponse> response = accountService.updateAccount(accountRequest);
         return ResponseEntity.status(response.getResponseStatus()).body(response);
     }
+
+    @Override
+    @DeleteMapping("/delete-account")
+    public ResponseEntity<Response<AccountResponse>> deleteAccount(@RequestParam("accountNo") String accountNo) {
+        logger.info("delete user account");
+        Response<AccountResponse> response = accountService.findAndDeleteAccount(accountNo);
+        return ResponseEntity.status(response.getResponseStatus()).body(response);
+    }
 }

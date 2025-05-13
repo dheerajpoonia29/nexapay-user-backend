@@ -1,6 +1,8 @@
 package com.nexapay.nexapay_backend.dao;
 
 import com.nexapay.nexapay_backend.model.AccountEntity;
+import com.nexapay.nexapay_backend.model.UserEntity;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,5 +23,21 @@ public class AccountDAO {
     public AccountEntity readByAccountNo(String accountNo) {
         logger.info("read by account no");
         return accountRepository.findByAccountNo(accountNo).orElse(null);
+    }
+
+    @Transactional
+    public boolean deleteAccount(AccountEntity accountEntity) {
+        logger.info("detach reference");
+        UserEntity user = accountEntity.getUserEntity();
+        if (user != null) {
+            user.setAccountEntity(null);
+        }
+
+        logger.info("make user null");
+        accountEntity.setUserEntity(null);
+
+        logger.info("dao deleting");
+        accountRepository.delete(accountEntity);
+        return true;
     }
 }

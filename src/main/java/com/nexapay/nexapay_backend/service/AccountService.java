@@ -82,6 +82,7 @@ public class AccountService implements AccountServiceInterface {
         return createResponse(HttpStatus.OK, "account found", accountEntity);
     }
 
+    @Override
     public Response<AccountResponse> updateAccount(AccountRequest accountRequest) {
         logger.info("read account");
         AccountEntity accountEntity = accountDAO.readByAccountNo(accountRequest.getAccountNo());
@@ -100,6 +101,22 @@ public class AccountService implements AccountServiceInterface {
 
         logger.info("return response");
         if(status) return createResponse(HttpStatus.OK, "account updated", accountEntity);
+        return createResponse(HttpStatus.INTERNAL_SERVER_ERROR, "internal server error", null);
+    }
+
+    @Override
+    public Response<AccountResponse> findAndDeleteAccount(String accountNo) {
+        logger.info("find account");
+        AccountEntity accountEntity = accountDAO.readByAccountNo(accountNo);
+        if(accountEntity==null) {
+            return createResponse(HttpStatus.NOT_FOUND, "account not present", null);
+        }
+
+        logger.info("delete account");
+        boolean status = accountDAO.deleteAccount(accountEntity);
+
+        logger.info("return response");
+        if(status) return createResponse(HttpStatus.CREATED, "account deleted successfully", null);
         return createResponse(HttpStatus.INTERNAL_SERVER_ERROR, "internal server error", null);
     }
 }

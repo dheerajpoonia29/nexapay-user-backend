@@ -17,4 +17,6 @@ public interface AccountInterface {
     ResponseEntity<Response<AccountResponse>> searchAccountByAccountNo(@RequestParam String accountNo);
 
     ResponseEntity<Response<AccountResponse>> updateAccount(@RequestBody AccountRequest accountRequest);
+
+    ResponseEntity<Response<AccountResponse>> deleteAccount(@RequestParam("accountNo") String accountNo);
 }

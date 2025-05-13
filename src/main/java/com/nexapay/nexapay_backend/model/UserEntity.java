@@ -25,7 +25,7 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
 
-    @OneToOne(mappedBy = "userEntity", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private AccountEntity accountEntity;
 }

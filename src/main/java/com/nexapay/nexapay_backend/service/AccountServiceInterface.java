@@ -10,4 +10,8 @@ public interface AccountServiceInterface {
     Response<AccountResponse> getAccountByUserEmail(String email);
 
     Response<AccountResponse> getAccountByAccountNo(String accountNo);
+
+    Response<AccountResponse> updateAccount(AccountRequest accountRequest);
+
+    Response<AccountResponse> findAndDeleteAccount(String accountNo);
 }
