@@ -1,0 +1,4 @@
+mvn clean package
+export DATASOURCE_USERNAME=root
+export DATASOURCE_PASSWORD=password
+java -jar target/nexapay-user-backend-0.0.1-SNAPSHOT.jar
