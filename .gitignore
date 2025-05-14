@@ -3,7 +3,6 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-
 .idea
-
-../nexapay-bank-backend/.mvn/wrapper/.env
+.env
+compose.yaml
