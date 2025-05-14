@@ -6,4 +6,4 @@ target/
 
 .idea
 
-.env
+../nexapay-bank-backend/.mvn/wrapper/.env
