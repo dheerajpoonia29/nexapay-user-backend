@@ -1,7 +1,7 @@
 package com.nexapay.nexapay_backend.dao;
 
-import com.nexapay.nexapay_backend.model.AccountEntity;
-import com.nexapay.nexapay_backend.model.UserEntity;
+import com.nexapay.model.AccountEntity;
+import com.nexapay.model.UserEntity;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,6 @@
 package com.nexapay.nexapay_backend.dao;
 
-import com.nexapay.nexapay_backend.model.UserEntity;
+import com.nexapay.model.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

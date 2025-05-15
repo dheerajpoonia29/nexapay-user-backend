@@ -1,6 +1,6 @@
 package com.nexapay.nexapay_backend.dao;
 
-import com.nexapay.nexapay_backend.model.UserEntity;
+import com.nexapay.model.UserEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

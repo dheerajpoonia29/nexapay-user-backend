@@ -1,13 +1,11 @@
 package com.nexapay.nexapay_backend.service;
 
 import com.nexapay.dto.request.UserRequest;
-import com.nexapay.dto.response.AccountResponse;
 import com.nexapay.nexapay_backend.dao.UserDAO;
 import com.nexapay.dto.response.Response;
 import com.nexapay.dto.response.UserResponse;
 import com.nexapay.nexapay_backend.helper.LoginAuthentication;
-import com.nexapay.nexapay_backend.model.AccountEntity;
-import com.nexapay.nexapay_backend.model.UserEntity;
+import com.nexapay.model.UserEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

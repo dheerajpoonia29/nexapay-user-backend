@@ -2,7 +2,7 @@ package com.nexapay.nexapay_backend.helper;
 
 import com.nexapay.dto.response.AccountResponse;
 import com.nexapay.dto.response.Response;
-import com.nexapay.nexapay_backend.model.AccountEntity;
+import com.nexapay.model.AccountEntity;
 import org.springframework.http.HttpStatus;
 
 public class CreateAccountResponse {
