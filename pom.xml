@@ -63,7 +63,7 @@
 		<dependency>
 			<groupId>com.nexapay</groupId>
 			<artifactId>nexapay-backend-common</artifactId>
-			<version>1.3-SNAPSHOT</version>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

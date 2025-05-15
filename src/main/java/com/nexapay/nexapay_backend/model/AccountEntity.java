@@ -1,6 +1,5 @@
 package com.nexapay.nexapay_backend.model;
 
-import com.nexapay.dto.response.AccountResponse;
 import jakarta.persistence.*;
 import lombok.*;
 
