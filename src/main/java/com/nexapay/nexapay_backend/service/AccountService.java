@@ -1,12 +1,15 @@
 package com.nexapay.nexapay_backend.service;
 
 import com.nexapay.dto.request.AccountRequest;
+import com.nexapay.dto.request.BankRequest;
 import com.nexapay.dto.response.AccountResponse;
 import com.nexapay.dto.request.UserRequest;
+import com.nexapay.dto.response.BankResponse;
 import com.nexapay.dto.response.Response;
+import com.nexapay.model.BankEntity;
+import com.nexapay.nexapay_backend.client.BankClient;
 import com.nexapay.nexapay_backend.dao.AccountDAO;
 import com.nexapay.nexapay_backend.dao.UserDAO;
-import com.nexapay.nexapay_backend.helper.AccountServiceHelper;
 import com.nexapay.model.AccountEntity;
 import com.nexapay.model.UserEntity;
 import org.slf4j.Logger;
@@ -28,10 +31,8 @@ public class AccountService implements AccountServiceInterface {
     @Autowired
     UserDAO userDAO;
 
-    UserEntity userEntity;
-
     @Autowired
-    AccountServiceHelper accountServiceHelper;
+    BankClient bankClient;
 
     @Override
     public Response<AccountResponse> createAccount(AccountRequest accountRequest) {
@@ -47,11 +48,22 @@ public class AccountService implements AccountServiceInterface {
             return createResponse(HttpStatus.CONFLICT, "account already exist", userEntity.getAccountEntity());
         }
 
+        logger.info("check bank exist");
+        BankRequest bankRequest = accountRequest.getBankRequest();
+        BankResponse bankResponse = bankClient.getBank(bankRequest.getId()!=null?bankRequest.getId():1); // todo not make 1 default
+        if (bankResponse==null) {
+            return createResponse(HttpStatus.NOT_FOUND, "bank not found", null);
+        }
+
         logger.info("create account");
         AccountEntity accountEntity = AccountEntity.builder()
                 .accountNo(generateAccountNumber())
                 .balance(0L)
-                .userEntity(userEntity).build();
+                .bank(BankEntity.builder()
+                        .id(bankResponse.getId())
+                        .name(bankResponse.getName())
+                        .build())
+                .user(userEntity).build();
 
         logger.info("persist account");
         boolean status  = accountDAO.saveAccount(accountEntity);

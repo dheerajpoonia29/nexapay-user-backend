@@ -42,7 +42,7 @@ public class AccountController implements AccountInterface {
     }
 
     @Override
-    @GetMapping("/search-by-email")
+    @GetMapping("/get-by-email")
     public ResponseEntity<Response<AccountResponse>> searchAccountByUserEmail(@RequestParam("email") String email) {
         logger.info("search account by user email");
         Response<AccountResponse> response = accountService.getAccountByUserEmail(email);
@@ -50,7 +50,7 @@ public class AccountController implements AccountInterface {
     }
 
     @Override
-    @GetMapping("/search-by-account-no")
+    @GetMapping("/get-by-account-no")
     public ResponseEntity<Response<AccountResponse>> searchAccountByAccountNo(@RequestParam("accountNo") String accountNo) {
         logger.info("search account by user account no");
         Response<AccountResponse> response = accountService.getAccountByAccountNo(accountNo);

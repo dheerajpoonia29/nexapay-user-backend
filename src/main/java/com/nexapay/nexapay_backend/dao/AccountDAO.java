@@ -28,13 +28,13 @@ public class AccountDAO {
     @Transactional
     public boolean deleteAccount(AccountEntity accountEntity) {
         logger.info("detach reference");
-        UserEntity user = accountEntity.getUserEntity();
+        UserEntity user = accountEntity.getUser();
         if (user != null) {
             user.setAccountEntity(null);
         }
 
         logger.info("make user null");
-        accountEntity.setUserEntity(null);
+        accountEntity.setUser(null);
 
         logger.info("dao deleting");
         accountRepository.delete(accountEntity);
