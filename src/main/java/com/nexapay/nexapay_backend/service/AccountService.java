@@ -53,7 +53,7 @@ public class AccountService implements AccountServiceInterface {
 
         logger.info("check bank exist");
         BankRequest bankRequest = accountRequest.getBankRequest();
-        BankResponse bankResponse = bankClient.getBank(bankRequest.getId()!=null?bankRequest.getId():1); // todo not make 1 default
+        BankResponse bankResponse = bankClient.getBank(bankRequest.getId());
         if (bankResponse==null) {
             return createResponse(HttpStatus.NOT_FOUND, "bank not found", null);
         }
