@@ -29,6 +29,7 @@ public class CreateUserResponse {
                                                 AccountResponse.builder()
                                                     .accountNo(accountEntity.getAccountNo())
                                                     .balance(accountEntity.getBalance())
+                                                    .ifscCode(accountEntity.getIfscCode())
                                                     .bankData(
                                                             BankResponse.builder()
                                                                     .id(bankEntity.getId())

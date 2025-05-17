@@ -6,6 +6,7 @@ import com.nexapay.dto.response.AccountResponse;
 import com.nexapay.dto.request.UserRequest;
 import com.nexapay.dto.response.BankResponse;
 import com.nexapay.dto.response.Response;
+import com.nexapay.helper.BankBranch;
 import com.nexapay.model.BankEntity;
 import com.nexapay.nexapay_backend.client.BankClient;
 import com.nexapay.nexapay_backend.dao.AccountDAO;
@@ -17,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static com.nexapay.nexapay_backend.helper.AccountNumberGenerator.generateAccountNumber;
 import static com.nexapay.nexapay_backend.helper.CreateAccountResponse.createResponse;
@@ -55,13 +58,32 @@ public class AccountService implements AccountServiceInterface {
             return createResponse(HttpStatus.NOT_FOUND, "bank not found", null);
         }
 
+
+        logger.info("check branch exist");
+        String ifscCode = accountRequest.getIfscCode();
+        List<BankBranch> bankBranchList = bankResponse.getBranches();
+        BankBranch bankBranch = null;
+        for (BankBranch obj: bankBranchList) {
+            if(obj.getIfscCode().equals(ifscCode)) {
+                bankBranch = obj;
+                break;
+            }
+        }
+
+        if (bankBranch==null) {
+            logger.info("branch not found");
+            return createResponse(HttpStatus.NOT_FOUND, "branch not found", null);
+        }
+
         logger.info("create account");
         AccountEntity accountEntity = AccountEntity.builder()
                 .accountNo(generateAccountNumber())
                 .balance(0L)
-                .bank(BankEntity.builder()
+                .ifscCode(ifscCode)
+                .bank(BankEntity.builder()   // todo this is vulnerable, just sending for reference only
                         .id(bankResponse.getId())
                         .name(bankResponse.getName())
+                        .branches(bankResponse.getBranches())
                         .build())
                 .user(userEntity).build();
 

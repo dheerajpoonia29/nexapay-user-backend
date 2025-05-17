@@ -21,10 +21,12 @@ public class CreateAccountResponse {
                                 AccountResponse.builder()
                                         .accountNo(accountEntity.getAccountNo())
                                         .balance(accountEntity.getBalance())
+                                        .ifscCode(accountEntity.getIfscCode())
                                         .bankData(
                                                 BankResponse.builder()
                                                         .id(bankEntity.getId())
                                                         .name(bankEntity.getName())
+                                                        .branches(bankEntity.getBranches())
                                                         .branches(bankEntity.getBranches()).build()
                                         )
                                         .build()).build();

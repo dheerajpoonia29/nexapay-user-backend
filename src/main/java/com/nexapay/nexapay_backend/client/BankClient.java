@@ -24,7 +24,7 @@ public class BankClient {
     }
 
     public BankResponse getBank(Integer bankId) {
-        logger.info("get bank, id: {}", bankId);
+        logger.info("get bank, bank id: {}", bankId);
 
         return webClient.get()
                 .uri("/bank/get?bankId={bankId}", bankId)
