@@ -39,6 +39,7 @@ public class AccountService implements AccountServiceInterface {
 
     @Override
     public Response<AccountResponse> createAccount(AccountRequest accountRequest) {
+        logger.info("inside createAccount");
         logger.info("check user exist");
         UserRequest userRequest = accountRequest.getUserRequest();
         UserEntity userEntity = userDAO.readUserByEmail(userRequest.getEmail());
@@ -57,7 +58,6 @@ public class AccountService implements AccountServiceInterface {
         if (bankResponse==null) {
             return createResponse(HttpStatus.NOT_FOUND, "bank not found", null);
         }
-
 
         logger.info("check branch exist");
         String ifscCode = accountRequest.getIfscCode();
@@ -99,6 +99,7 @@ public class AccountService implements AccountServiceInterface {
 
     @Override
     public Response<AccountResponse> getAccountByUserEmail(String email) {
+        logger.info("inside getAccountByUserEmail");
         UserEntity userEntity = userDAO.readUserByEmail(email);
         if(userEntity==null || userEntity.getAccountEntity()==null) {
             return createResponse(HttpStatus.NOT_FOUND, "account not present", null);
@@ -109,6 +110,7 @@ public class AccountService implements AccountServiceInterface {
 
     @Override
     public Response<AccountResponse> getAccountByAccountNo(String accountNo) {
+        logger.info("inside getAccountByAccountNo");
         AccountEntity accountEntity = accountDAO.readByAccountNo(accountNo);
         if(accountEntity==null) {
             return createResponse(HttpStatus.NOT_FOUND, "account not present", null);
@@ -118,6 +120,7 @@ public class AccountService implements AccountServiceInterface {
 
     @Override
     public Response<AccountResponse> updateAccount(AccountRequest accountRequest) {
+        logger.info("inside updateAccount");
         logger.info("read account");
         AccountEntity accountEntity = accountDAO.readByAccountNo(accountRequest.getAccountNo());
 
@@ -140,6 +143,7 @@ public class AccountService implements AccountServiceInterface {
 
     @Override
     public Response<AccountResponse> findAndDeleteAccount(String accountNo) {
+        logger.info("inside findAndDeleteAccount");
         logger.info("find account");
         AccountEntity accountEntity = accountDAO.readByAccountNo(accountNo);
         if(accountEntity==null) {
