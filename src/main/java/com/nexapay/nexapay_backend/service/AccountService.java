@@ -38,8 +38,7 @@ public class AccountService implements AccountServiceInterface {
     BankClient bankClient;
 
     @Override
-    public Response<AccountResponse> createAccount(AccountRequest accountRequest) {
-        logger.info("inside createAccount");
+    public Response<AccountResponse> validateUserBankAndCreateAccount(AccountRequest accountRequest) {
         logger.info("check user exist");
         UserRequest userRequest = accountRequest.getUserRequest();
         UserEntity userEntity = userDAO.readUserByEmail(userRequest.getEmail());
@@ -78,7 +77,7 @@ public class AccountService implements AccountServiceInterface {
         logger.info("create account");
         AccountEntity accountEntity = AccountEntity.builder()
                 .accountNo(generateAccountNumber())
-                .balance(0L)
+                .balance(100)
                 .ifscCode(ifscCode)
                 .bank(BankEntity.builder()   // todo this is vulnerable, just sending for reference only
                         .id(bankResponse.getId())

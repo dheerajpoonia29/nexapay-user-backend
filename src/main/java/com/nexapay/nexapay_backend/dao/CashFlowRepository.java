@@ -11,5 +11,5 @@ import java.util.Optional;
 
 @Repository
 public interface CashFlowRepository extends JpaRepository<CashFlowEntity, Integer> {
-    List<CashFlowEntity> findByAccount(AccountEntity account);
+    List<CashFlowEntity> findByAccountNo(String accountNo);
 }

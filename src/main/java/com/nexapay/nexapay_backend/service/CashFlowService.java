@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -30,8 +32,7 @@ public class CashFlowService implements CashFlowServiceInterface{
     AccountDAO accountDAO;
 
     @Override
-    public Response<CashFlowResponse> saveCashDepositWithdrawal(CashFlowRequest cashFlowRequest) {
-
+    public Response<CashFlowResponse> getAccountAndSaveCashFlow(CashFlowRequest cashFlowRequest) {
         logger.info("get user account, accountNo: {}", cashFlowRequest.getAccountNo());
         AccountEntity accountEntity = accountDAO.readByAccountNo(cashFlowRequest.getAccountNo());
         if (accountEntity==null) {
@@ -50,12 +51,15 @@ public class CashFlowService implements CashFlowServiceInterface{
                 .cashFlowType(cashFlowRequest.getCashFlowType())
                 .cashFlowStatus(CashFlowStatus.PENDING)
                 .cashFlowStatusMsg("request to "+cashFlowRequest.getCashFlowType()+" from account "+cashFlowRequest.getAccountNo())
+                .userEmail(cashFlowRequest.getUserEmail())
+                .accountNo(cashFlowRequest.getAccountNo())
                 .account(accountEntity)
                 .bank(accountEntity.getBank()).build();
 
         logger.info("saving cash flow entity");
         cashFlowDAO.createCashFlow(cashFlowEntity);
 
+        logger.info("return response");
         return Response.<CashFlowResponse>builder()
                 .responseStatus(HttpStatus.CREATED)
                 .responseStatusInt(HttpStatus.CREATED.value())
@@ -64,8 +68,40 @@ public class CashFlowService implements CashFlowServiceInterface{
                 .responseData(null).build();
     }
 
-    @Override
-    public Response<CashFlowResponse> getCashDepositWithdrawal(CashFlowRequest cashFlowRequest) {
-        return null;
+
+    public Response<List<CashFlowResponse>> getCashFlows() {
+        logger.info("get cash flows entity and transform into cash flow response");
+        List<CashFlowEntity> cashFlowEntityList = cashFlowDAO.getCashFlows();
+
+        logger.info("convert cashFlowEntityList to cashFlowEntityResponse");
+        List<CashFlowResponse> cashFlowResponseList = new ArrayList<>();
+        for(CashFlowEntity cashFlowEntity: cashFlowEntityList) {
+            cashFlowResponseList.add(cashFlowEntity.toResponse());
+        }
+
+        logger.info("return response");
+        return Response.<List<CashFlowResponse>>builder()
+                .responseStatus(HttpStatus.OK)
+                .responseStatusInt(HttpStatus.OK.value())
+                .responseMsg("cash flows found")
+                .responseData(cashFlowResponseList).build();
+    }
+
+    public Response<List<CashFlowResponse>> getCashFlowsByAccountNo(String accountNo) {
+        logger.info("get cash flows by account no: {}", accountNo);
+        List<CashFlowEntity> cashFlowEntityList = cashFlowDAO.getCashFlows();
+
+        logger.info("convert cashFlowEntityList to cashFlowEntityResponse");
+        List<CashFlowResponse> cashFlowResponseList = new ArrayList<>();
+        for(CashFlowEntity cashFlowEntity: cashFlowEntityList) {
+            cashFlowResponseList.add(cashFlowEntity.toResponse());
+        }
+
+        logger.info("return response");
+        return Response.<List<CashFlowResponse>>builder()
+                .responseStatus(HttpStatus.OK)
+                .responseStatusInt(HttpStatus.OK.value())
+                .responseMsg("cash flows found")
+                .responseData(cashFlowResponseList).build();
     }
 }

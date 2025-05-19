@@ -5,7 +5,7 @@ import com.nexapay.dto.response.AccountResponse;
 import com.nexapay.dto.response.Response;
 
 public interface AccountServiceInterface {
-    Response<AccountResponse> createAccount(AccountRequest accountRequest);
+    Response<AccountResponse> validateUserBankAndCreateAccount(AccountRequest accountRequest);
 
     Response<AccountResponse> getAccountByUserEmail(String email);
 

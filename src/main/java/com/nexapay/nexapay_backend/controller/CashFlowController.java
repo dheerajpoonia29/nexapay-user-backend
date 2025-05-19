@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/cashflow")
 public class CashFlowController implements CashFlowControllerInterface{
@@ -22,7 +24,23 @@ public class CashFlowController implements CashFlowControllerInterface{
     @PostMapping("/create")
     public ResponseEntity<Response<CashFlowResponse>> createCashFlow(@RequestBody  CashFlowRequest request) {
         logger.info("create cash flow");
-        Response<CashFlowResponse> response = cashFlowService.saveCashDepositWithdrawal(request);
+        Response<CashFlowResponse> response = cashFlowService.getAccountAndSaveCashFlow(request);
+        return ResponseEntity.status(response.getResponseStatus()).body(response);
+    }
+
+    @Override
+    @GetMapping("/get")
+    public ResponseEntity<Response<List<CashFlowResponse>>> getCashFlows() {
+        logger.info("get cash flows");
+        Response<List<CashFlowResponse>> response = cashFlowService.getCashFlows();
+        return ResponseEntity.status(response.getResponseStatus()).body(response);
+    }
+
+    @Override
+    @GetMapping("/get-by-account-no")
+    public ResponseEntity<Response<List<CashFlowResponse>>> getCashFlowsByAccount(@RequestParam String accountNo) {
+        logger.info("get cash flows");
+        Response<List<CashFlowResponse>> response = cashFlowService.getCashFlowsByAccountNo(accountNo);
         return ResponseEntity.status(response.getResponseStatus()).body(response);
     }
 }

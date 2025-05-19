@@ -26,8 +26,13 @@ public class CashFlowDAO {
         cashFlowRepository.save(cashFlowEntity);
     }
 
-    List<CashFlowEntity> getCashFlowByAccountEntity(AccountEntity entity) {
-        logger.info("cash flow dao get entity");
-        return cashFlowRepository.findByAccount(entity);
+    public List<CashFlowEntity> getCashFlows() {
+        logger.info("cash flows dao get entity");
+        return cashFlowRepository.findAll();
+    }
+
+    public List<CashFlowEntity> getCashFlowsByAccountNo(String accountNo) {
+        logger.info("cash flows dao get entity");
+        return cashFlowRepository.findByAccountNo(accountNo);
     }
 }

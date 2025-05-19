@@ -4,8 +4,12 @@ import com.nexapay.dto.request.CashFlowRequest;
 import com.nexapay.dto.response.CashFlowResponse;
 import com.nexapay.dto.response.Response;
 
-public interface CashFlowServiceInterface {
-    Response<CashFlowResponse> saveCashDepositWithdrawal(CashFlowRequest cashFlowRequest);
+import java.util.List;
 
-    Response<CashFlowResponse> getCashDepositWithdrawal(CashFlowRequest cashFlowRequest);
+public interface CashFlowServiceInterface {
+    Response<CashFlowResponse> getAccountAndSaveCashFlow(CashFlowRequest cashFlowRequest);
+
+    Response<List<CashFlowResponse>> getCashFlows();
+
+    Response<List<CashFlowResponse>> getCashFlowsByAccountNo(String accountNo);
 }
