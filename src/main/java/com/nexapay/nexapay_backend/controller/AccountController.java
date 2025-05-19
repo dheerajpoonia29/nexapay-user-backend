@@ -37,7 +37,7 @@ public class AccountController implements AccountInterface {
     @PostMapping("/create")
     public ResponseEntity<Response<AccountResponse>> openAccount(@RequestBody AccountRequest accountRequest) {
         logger.info("create account");
-        Response<AccountResponse> response = accountService.validateUserBankAndCreateAccount(accountRequest);
+            Response<AccountResponse> response = accountService.validateUserBankAndCreateAccount(accountRequest);
         return ResponseEntity.status(response.getResponseStatus()).body(response);
     }
 

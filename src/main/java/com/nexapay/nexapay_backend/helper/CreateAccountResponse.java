@@ -12,26 +12,34 @@ import org.springframework.http.HttpStatus;
 public class CreateAccountResponse {
     public static Response<AccountResponse> createResponse(HttpStatus httpStatus, String responseMsg,
                                                            AccountEntity accountEntity) {
-        UserEntity userEntity = accountEntity.getUser();
-        BankEntity bankEntity = accountEntity.getBank();
+        if(accountEntity!=null) {
 
+            UserEntity userEntity = accountEntity.getUser();
+            BankEntity bankEntity = accountEntity.getBank();
+
+            return Response.<AccountResponse>builder()
+                    .responseStatus(httpStatus)
+                    .responseStatusInt(httpStatus.value())
+                    .responseMsg(responseMsg)
+                    .responseData(
+                            AccountResponse.builder()
+                                    .id(accountEntity.getId())
+                                    .accountNo(accountEntity.getAccountNo())
+                                    .balance(accountEntity.getBalance())
+                                    .ifscCode(accountEntity.getIfscCode())
+                                    .bankData(BankResponse.builder()
+                                            .id(bankEntity.getId())
+                                            .name(bankEntity.getName())
+                                            .branches(bankEntity.getBranches()).build())
+                                    .userData(UserResponse.builder()
+                                            .id(userEntity.getId())
+                                            .name(userEntity.getName())
+                                            .email(userEntity.getEmail()).build()).build()).build();
+        }
         return Response.<AccountResponse>builder()
                 .responseStatus(httpStatus)
                 .responseStatusInt(httpStatus.value())
                 .responseMsg(responseMsg)
-                .responseData(
-                        AccountResponse.builder()
-                                .id(accountEntity.getId())
-                                .accountNo(accountEntity.getAccountNo())
-                                .balance(accountEntity.getBalance())
-                                .ifscCode(accountEntity.getIfscCode())
-                                .bankData(BankResponse.builder()
-                                        .id(bankEntity.getId())
-                                        .name(bankEntity.getName())
-                                        .branches(bankEntity.getBranches()).build())
-                                .userData(UserResponse.builder()
-                                        .id(userEntity.getId())
-                                        .name(userEntity.getName())
-                                        .email(userEntity.getEmail()).build()).build()).build();
+                .responseData(null).build();
     }
 }

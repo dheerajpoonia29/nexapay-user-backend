@@ -142,8 +142,7 @@ public class AccountService implements AccountServiceInterface {
 
     @Override
     public Response<AccountResponse> findAndDeleteAccount(String accountNo) {
-        logger.info("inside findAndDeleteAccount");
-        logger.info("find account");
+        logger.info("find account for delete");
         AccountEntity accountEntity = accountDAO.readByAccountNo(accountNo);
         if(accountEntity==null) {
             return createResponse(HttpStatus.NOT_FOUND, "account not present", null);
